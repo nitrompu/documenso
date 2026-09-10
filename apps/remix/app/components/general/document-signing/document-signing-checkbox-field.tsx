@@ -277,17 +277,17 @@ export const DocumentSigningCheckboxField = ({
           )}
           <div
             className={cn(
-              'z-50 my-0.5 flex gap-1',
-              parsedFieldMeta.direction === 'horizontal' ? 'flex-row flex-wrap' : 'flex-col gap-y-1',
+              'z-50 flex h-full w-full py-2',
+              parsedFieldMeta.direction === 'horizontal' ? 'flex-row' : 'flex-col',
             )}
           >
             {values?.map((item: { id: number; value: string; checked: boolean }, index: number) => {
               const itemValue = item.value || `empty-value-${item.id}`;
 
               return (
-                <div key={index} className="flex items-center">
+                <div key={index} className="flex min-h-3 flex-1 items-center">
                   <Checkbox
-                    className="h-3 w-3"
+                    className="h-3 w-3 shrink-0"
                     id={`checkbox-${field.id}-${item.id}`}
                     checked={checkedValues.includes(itemValue)}
                     disabled={isReadOnly}
@@ -311,17 +311,17 @@ export const DocumentSigningCheckboxField = ({
       {field.inserted && (
         <div
           className={cn(
-            'my-0.5 flex gap-1',
-            parsedFieldMeta.direction === 'horizontal' ? 'flex-row flex-wrap' : 'flex-col gap-y-1',
+            'flex h-full w-full py-2',
+            parsedFieldMeta.direction === 'horizontal' ? 'flex-row' : 'flex-col',
           )}
         >
           {values?.map((item: { id: number; value: string; checked: boolean }, index: number) => {
             const itemValue = item.value || `empty-value-${item.id}`;
 
             return (
-              <div key={index} className="flex items-center">
+              <div key={index} className="flex min-h-3 flex-1 items-center">
                 <Checkbox
-                  className="h-3 w-3"
+                  className="h-3 w-3 shrink-0"
                   id={`checkbox-${field.id}-${item.id}`}
                   checked={parsedCheckedValues.includes(itemValue)}
                   disabled={isLoading || isReadOnly}

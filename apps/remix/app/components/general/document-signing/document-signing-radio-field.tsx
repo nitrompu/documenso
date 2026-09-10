@@ -9,6 +9,7 @@ import type {
   TRemovedSignedFieldWithTokenMutationSchema,
   TSignFieldWithTokenMutationSchema,
 } from '@documenso/trpc/server/field-router/schema';
+import { cn } from '@documenso/ui/lib/utils';
 import { Label } from '@documenso/ui/primitives/label';
 import { RadioGroup, RadioGroupItem } from '@documenso/ui/primitives/radio-group';
 import { useToast } from '@documenso/ui/primitives/use-toast';
@@ -165,10 +166,13 @@ export const DocumentSigningRadioField = ({ field, onSignField, onUnsignField }:
         <RadioGroup
           value={selectedOption}
           onValueChange={(value) => handleSelectItem(value)}
-          className="z-10 my-0.5 gap-y-1"
+          className={cn(
+            'z-10 flex h-full w-full gap-0 py-2',
+            parsedFieldMeta.direction === 'horizontal' ? 'flex-row' : 'flex-col',
+          )}
         >
           {values?.map((item, index) => (
-            <div key={index} className="flex items-center">
+            <div key={index} className="flex min-h-3 flex-1 items-center">
               <RadioGroupItem
                 className="h-3 w-3 shrink-0"
                 value={item.value}
@@ -186,11 +190,17 @@ export const DocumentSigningRadioField = ({ field, onSignField, onUnsignField }:
       )}
 
       {field.inserted && (
-        <RadioGroup value={field.customText ?? ''} className="my-0.5 gap-y-1">
+        <RadioGroup
+          value={field.customText ?? ''}
+          className={cn(
+            'flex h-full w-full gap-0 py-2',
+            parsedFieldMeta.direction === 'horizontal' ? 'flex-row' : 'flex-col',
+          )}
+        >
           {values?.map((item, index) => (
-            <div key={index} className="flex items-center">
+            <div key={index} className="flex min-h-3 flex-1 items-center">
               <RadioGroupItem
-                className="h-3 w-3"
+                className="h-3 w-3 shrink-0"
                 value={item.value}
                 id={`option-${field.id}-${item.id}`}
                 disabled={isReadOnly}

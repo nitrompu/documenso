@@ -52,12 +52,12 @@ export const FieldContent = ({ field, documentMeta }: FieldIconProps) => {
       return (
         <div
           className={cn(
-            'flex gap-1 py-0.5',
-            field.fieldMeta.direction === 'horizontal' ? 'flex-row flex-wrap' : 'flex-col gap-y-1',
+            'flex h-full w-full py-2',
+            field.fieldMeta.direction === 'horizontal' ? 'flex-row' : 'flex-col',
           )}
         >
-          <div className="flex items-center">
-            <Checkbox className="h-3 w-3" disabled />
+          <div className="flex min-h-3 flex-1 items-center">
+            <Checkbox className="h-3 w-3 shrink-0" disabled />
             <Label className="ml-1.5 font-normal text-foreground text-xs opacity-50">
               <Trans>Checkbox option</Trans>
             </Label>
@@ -68,15 +68,12 @@ export const FieldContent = ({ field, documentMeta }: FieldIconProps) => {
 
     return (
       <div
-        className={cn(
-          'flex gap-1 py-0.5',
-          field.fieldMeta.direction === 'horizontal' ? 'flex-row flex-wrap' : 'flex-col gap-y-1',
-        )}
+        className={cn('flex h-full w-full py-2', field.fieldMeta.direction === 'horizontal' ? 'flex-row' : 'flex-col')}
       >
         {field.fieldMeta.values.map((item, index) => (
-          <div key={index} className="flex items-center">
+          <div key={index} className="flex min-h-3 flex-1 items-center">
             <Checkbox
-              className="h-3 w-3"
+              className="h-3 w-3 shrink-0"
               id={`checkbox-${index}`}
               checked={checkedValues.includes(
                 item.value === '' ? `empty-value-${index + 1}` : item.value, // I got no idea...
@@ -102,11 +99,21 @@ export const FieldContent = ({ field, documentMeta }: FieldIconProps) => {
     field.fieldMeta.values.length > 0
   ) {
     return (
-      <div className="flex flex-col gap-y-2 py-0.5">
-        <RadioGroup value={field.customText ?? ''} className="gap-y-1">
+      <div className="flex h-full w-full">
+        <RadioGroup
+          value={field.customText ?? ''}
+          className={cn(
+            'flex h-full w-full gap-0 py-2',
+            field.fieldMeta.direction === 'horizontal' ? 'flex-row' : 'flex-col',
+          )}
+        >
           {field.fieldMeta.values.map((item, index) => (
-            <div key={index} className="flex items-center">
-              <RadioGroupItem className="pointer-events-none h-3 w-3" value={item.value} id={`option-${index}`} />
+            <div key={index} className="flex min-h-3 flex-1 items-center">
+              <RadioGroupItem
+                className="pointer-events-none h-3 w-3 shrink-0"
+                value={item.value}
+                id={`option-${index}`}
+              />
               {item.value && (
                 <Label htmlFor={`option-${index}`} className="ml-1.5 font-normal text-foreground text-xs">
                   {item.value}
