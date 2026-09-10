@@ -1,7 +1,6 @@
-import { useElementBounds } from '@documenso/lib/client-only/hooks/use-element-bounds';
 import { useFieldPageCoords } from '@documenso/lib/client-only/hooks/use-field-page-coords';
 import { useIsPageInDom } from '@documenso/lib/client-only/hooks/use-is-page-in-dom';
-import { PDF_VIEWER_CONTENT_SELECTOR, PDF_VIEWER_PAGE_SELECTOR } from '@documenso/lib/constants/pdf-viewer';
+import { PDF_VIEWER_CONTENT_SELECTOR } from '@documenso/lib/constants/pdf-viewer';
 import { isFieldUnsignedAndRequired } from '@documenso/lib/utils/advanced-fields-helpers';
 import { type Field, FieldType } from '@prisma/client';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -21,26 +20,18 @@ export function FieldContainerPortal({ field, children, className = '' }: FieldC
   const alternativePortalRoot = document.getElementById('document-field-portal-root');
 
   const coords = useFieldPageCoords(field);
-  const $pageBounds = useElementBounds(`${PDF_VIEWER_PAGE_SELECTOR}[data-page-number="${field.page}"]`);
-
-  const maxWidth = $pageBounds?.width ? $pageBounds.width - coords.x : undefined;
-
-  const isCheckboxOrRadioField = field.type === 'CHECKBOX' || field.type === 'RADIO';
 
   const style = useMemo(() => {
     const portalBounds = alternativePortalRoot?.getBoundingClientRect();
 
+    // Every field type, including checkbox and radio, is sized from the bounds
+    // stored on the field so the signing page matches the PDF renderer, which
+    // distributes the options across the full field height/width.
     const bounds = {
       top: `${coords.y}px`,
       left: `${coords.x}px`,
-      ...(!isCheckboxOrRadioField
-        ? {
-            height: `${coords.height}px`,
-            width: `${coords.width}px`,
-          }
-        : {
-            maxWidth: `${maxWidth}px`,
-          }),
+      height: `${coords.height}px`,
+      width: `${coords.width}px`,
     };
 
     if (portalBounds) {
@@ -49,7 +40,7 @@ export function FieldContainerPortal({ field, children, className = '' }: FieldC
     }
 
     return bounds;
-  }, [coords, maxWidth, isCheckboxOrRadioField]);
+  }, [coords]);
 
   return createPortal(
     <div className={cn('absolute', className)} style={style}>
